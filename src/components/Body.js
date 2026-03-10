@@ -1,19 +1,16 @@
-import React from 'react'
-import ButtonsList from './ButtonsList'
-import SideBar from './SideBar'
-import MainContainer from './MainContainer'
+import React from "react";
+import ButtonsList from "./ButtonsList";
+import SideBar from "./SideBar";
+import MainContainer from "./MainContainer";
+import { Outlet } from "react-router-dom";
 
-const Body = () => {
+const Body = ({search}) => {
   return (
-    <div>
-        <h1>Body</h1>
-        <div className='flex'>
-        <SideBar />
-        <MainContainer />
-        </div>
-        
+    <div className="flex">
+      <SideBar />
+      <Outlet />
     </div>
-  )
-}
+  );
+};
 
-export default Body
+export default Body;

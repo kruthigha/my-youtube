@@ -2,12 +2,12 @@ import React from 'react'
 import VideoContainer from './VideoContainer'
 import ButtonsList from './ButtonsList'
 
-const MainContainer = () => {
+const MainContainer = ({search}) => {
+  console.log('MC', search)
   return (
-    <div>
-        <h1>MainContainer</h1>
+    <div className='p-4'>
         <ButtonsList />
-        <VideoContainer />
+        <VideoContainer search={search}/>
       
     </div>
   )
