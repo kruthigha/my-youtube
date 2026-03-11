@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addMessage } from '../utils/chatSlice';
 import randomName from "random-indian-name";
+import { useForm } from "react-hook-form";
 import { getRandomMessage, randomMessage } from '../utils/messageGenerator';
 const ChatMessage = ({name,message}) => {
   
@@ -19,7 +20,7 @@ const ChatMessage = ({name,message}) => {
 }
 
 const LiveChat = () => {
-  const [liveChat, setLiveChat] = useState('')
+  const {register, handleSubmit, formState : { errors} ,reset}= useForm()
   const dispatch = useDispatch()
   const chat = useSelector( store => store.chat.message)
 
@@ -36,6 +37,14 @@ const LiveChat = () => {
     
     return ()=> clearInterval(i)
   },[])
+  const onSubmit = (data) => {
+  dispatch(addMessage({
+    name: "Kiruthiga",
+    message: data.chatbox,
+  }));
+
+  reset();
+};
   return (
     <>
     <div className="border border-black h-[500px] w-full overflow-y-scroll p-2 bg-gray-100 rounded-lg flex flex-col-reverse">
@@ -45,28 +54,27 @@ const LiveChat = () => {
     </div>
     <form
   className="flex"
-  onSubmit={(e) => {
-    e.preventDefault();
-
-    dispatch(addMessage({
-      name: "Kiruthiga",
-      message: liveChat,
-    }));
-
-    setLiveChat("");
-  }}
+  onSubmit={handleSubmit(onSubmit)}
 >
   <input
     className="border border-black w-full"
     type="text"
-    value={liveChat}
-    onChange={(e) => setLiveChat(e.target.value)}
+    // value={liveChat}
+    {...register('chatbox', {
+      required : "Text in chatbox required",
+      minLength :{
+        value  : 3,
+        message : "Text in chatbox required minimum 3characters"
+      }
+    })}
+
   />
 
   <button className="border border-black p-2">
     🚀
   </button>
 </form>
+<p className='text-sm text-red-500'>{errors.chatbox?.message}</p>
     </>
   );
 };
